@@ -10,10 +10,23 @@ function Movies() {
     setMovies(filteredMovies);
   };
 
+  const getBadgeMessage = () => {
+    let badgeColorProperty = "badge text-bg-";
+    badgeColorProperty += movies.length === 0 ? "info" : "success";
+    return badgeColorProperty;
+  };
+
+  //Count of movie items
+  if (movies.length === 0)
+    return (
+      <p className={getBadgeMessage()}>There are no movies in the database.</p>
+    );
+
   return (
     <>
-      <h1>Movies Component</h1>
-
+      <p className={getBadgeMessage()}>
+        Showing {movies.length} movies in the database.
+      </p>
       <table className="table">
         <thead>
           <tr>
