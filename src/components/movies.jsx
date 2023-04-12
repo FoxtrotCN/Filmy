@@ -11,6 +11,14 @@ function Movies() {
     setMovies(filteredMovies);
   };
 
+  const handleLike = (movie) => {
+    const getMovies = [...movies];
+    const index = movies.indexOf(movie);
+    getMovies[index] = { ...movies[index] };
+    getMovies[index].liked = !movies[index].liked;
+    setMovies(getMovies);
+  };
+
   const getBadgeMessage = () => {
     let badgeColorProperty = "badge text-bg-";
     badgeColorProperty += movies.length === 0 ? "info" : "success";
@@ -48,7 +56,7 @@ function Movies() {
               <td>{movie.numberInStock}</td>
               <td>{movie.dailyRentalRate}</td>
               <td>
-                <Like liked={true} />
+                <Like liked={movie.liked} onClick={() => handleLike(movie)} />
               </td>
               <td>
                 <button

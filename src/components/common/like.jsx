@@ -6,9 +6,22 @@ import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 // Input: liked: boolean
 // Output: onClick
 
-function Like({ liked }) {
-  let element = <FontAwesomeIcon icon={faHeart} />;
-  if (!liked) element = <FontAwesomeIcon icon={faHeartSolid} />;
+function Like({ liked, onClick }) {
+  let element = (
+    <FontAwesomeIcon
+      icon={faHeartSolid}
+      onClick={onClick}
+      style={{ cursor: "pointer" }}
+    />
+  );
+  if (!liked)
+    element = (
+      <FontAwesomeIcon
+        icon={faHeart}
+        onClick={onClick}
+        style={{ cursor: "pointer" }}
+      />
+    );
 
   return <>{element}</>;
 }
