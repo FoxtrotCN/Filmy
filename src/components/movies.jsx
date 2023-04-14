@@ -1,6 +1,7 @@
 import React from "react";
 import Like from "./common/like";
 import Pagination from "./common/pagination";
+import ListGroupGenres from "./common/listGroupGenres";
 import { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import { paginate } from "../utils/paginate";
@@ -35,7 +36,7 @@ function Movies() {
 
   //Count of movie items
   let moviesCount = allMovies.length;
-  if (allMovies.length === 0)
+  if (moviesCount === 0)
     return (
       <p className={getBadgeMessage()}>There are no movies in the database.</p>
     );
@@ -45,50 +46,61 @@ function Movies() {
 
   return (
     <>
-      <p className={getBadgeMessage()}>
-        Showing {allMovies.length} movies in the database.
-      </p>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Stock</th>
-            <th>Rate</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
+      <div className="row">
+        <div className="col-2">
+          <ListGroupGenres />
+        </div>
 
-        <tbody>
-          {movies.map((movie) => (
-            <tr key={movie._id}>
-              <td>{movie.title}</td>
-              <td>{movie.genre.name}</td>
-              <td>{movie.numberInStock}</td>
-              <td>{movie.dailyRentalRate}</td>
-              <td>
-                <Like liked={movie.liked} onClick={() => handleLike(movie)} />
-              </td>
-              <td>
-                <button
-                  onClick={() => handleDelete(movie)}
-                  className="btn btn-danger btn-sm"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="col">
+          <p className={getBadgeMessage()}>
+            Showing {allMovies.length} movies in the database.
+          </p>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Stock</th>
+                <th>Rate</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
 
-      <Pagination
-        itemsCount={moviesCount}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
+            <tbody>
+              {movies.map((movie) => (
+                <tr key={movie._id}>
+                  <td>{movie.title}</td>
+                  <td>{movie.genre.name}</td>
+                  <td>{movie.numberInStock}</td>
+                  <td>{movie.dailyRentalRate}</td>
+                  <td>
+                    <Like
+                      liked={movie.liked}
+                      onClick={() => handleLike(movie)}
+                    />
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleDelete(movie)}
+                      className="btn btn-danger btn-sm"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <Pagination
+            itemsCount={moviesCount}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      </div>
     </>
   );
 }
