@@ -2,9 +2,12 @@ import React from "react";
 import { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
+import pagination from "./common/pagination";
+import Pagination from "./common/pagination";
 
 function Movies() {
   const [movies, setMovies] = useState(getMovies());
+  const [pageSize, setPageSize] = useState(4);
 
   const handleDelete = (movie) => {
     const filteredMovies = movies.filter((m) => m._id !== movie._id);
@@ -25,7 +28,12 @@ function Movies() {
     return badgeColorProperty;
   };
 
+  const handlePageChange = (page) => {
+    console.log(page);
+  };
+
   //Count of movie items
+  let moviesCount = movies.length;
   if (movies.length === 0)
     return (
       <p className={getBadgeMessage()}>There are no movies in the database.</p>
@@ -70,6 +78,12 @@ function Movies() {
           ))}
         </tbody>
       </table>
+
+      <Pagination
+        itemsCount={moviesCount}
+        pageSize={pageSize}
+        onPageChange={handlePageChange}
+      />
     </>
   );
 }
