@@ -1,30 +1,31 @@
 import React from "react";
-import { useState } from "react";
-import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
 import Pagination from "./common/pagination";
+import { useState } from "react";
+import { getMovies } from "../services/fakeMovieService";
+import { paginate } from "../utils/paginate";
 
 function Movies() {
-  const [movies, setMovies] = useState(getMovies());
+  const [allMovies, setAllMovies] = useState(getMovies());
   const [pageSize, setPageSize] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
 
   const handleDelete = (movie) => {
-    const filteredMovies = movies.filter((m) => m._id !== movie._id);
-    setMovies(filteredMovies);
+    const filteredMovies = allMovies.filter((m) => m._id !== movie._id);
+    setAllMovies(filteredMovies);
   };
 
   const handleLike = (movie) => {
-    const getMovies = [...movies];
-    const index = movies.indexOf(movie);
-    getMovies[index] = { ...movies[index] };
-    getMovies[index].liked = !movies[index].liked;
-    setMovies(getMovies);
+    const getMovies = [...allMovies];
+    const index = allMovies.indexOf(movie);
+    getMovies[index] = { ...allMovies[index] };
+    getMovies[index].liked = !allMovies[index].liked;
+    setAllMovies(getMovies);
   };
 
   const getBadgeMessage = () => {
     let badgeColorProperty = "badge text-bg-";
-    badgeColorProperty += movies.length === 0 ? "info" : "success";
+    badgeColorProperty += allMovies.length === 0 ? "info" : "success";
     return badgeColorProperty;
   };
 
@@ -33,16 +34,19 @@ function Movies() {
   };
 
   //Count of movie items
-  let moviesCount = movies.length;
-  if (movies.length === 0)
+  let moviesCount = allMovies.length;
+  if (allMovies.length === 0)
     return (
       <p className={getBadgeMessage()}>There are no movies in the database.</p>
     );
 
+  // Paginate movies
+  const movies = paginate(allMovies, currentPage, pageSize);
+
   return (
     <>
       <p className={getBadgeMessage()}>
-        Showing {movies.length} movies in the database.
+        Showing {allMovies.length} movies in the database.
       </p>
       <table className="table">
         <thead>
