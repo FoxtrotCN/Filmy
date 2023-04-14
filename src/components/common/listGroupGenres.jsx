@@ -1,16 +1,21 @@
 import React from "react";
 
-function ListGroupGenres({ genres, onGenreSelected }) {
+function ListGroupGenres({
+  genres,
+  onGenreSelected,
+  textProperty,
+  valueProperty,
+}) {
   return (
     <>
       <ul className="list-group">
         {genres.map((genre) => (
           <li
-            key={genre._id}
+            key={genre[valueProperty]}
             className="list-group-item"
             onClick={() => onGenreSelected(genre)}
           >
-            {genre.name}
+            {genre[textProperty]}
           </li>
         ))}
       </ul>
@@ -18,4 +23,8 @@ function ListGroupGenres({ genres, onGenreSelected }) {
   );
 }
 
+ListGroupGenres.defaultProps = {
+  textProperty: "name",
+  valueProperty: "_id",
+};
 export default ListGroupGenres;

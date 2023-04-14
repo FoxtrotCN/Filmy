@@ -55,7 +55,7 @@ function Movies() {
   return (
     <>
       <div className="row">
-        <div className="col-2">
+        <div className="col-3">
           <ListGroupGenres
             genres={allGenres}
             onGenreSelected={handleGenreSelect}
