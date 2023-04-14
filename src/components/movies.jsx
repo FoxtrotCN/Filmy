@@ -2,12 +2,12 @@ import React from "react";
 import { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
-import pagination from "./common/pagination";
 import Pagination from "./common/pagination";
 
 function Movies() {
   const [movies, setMovies] = useState(getMovies());
   const [pageSize, setPageSize] = useState(4);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleDelete = (movie) => {
     const filteredMovies = movies.filter((m) => m._id !== movie._id);
@@ -29,7 +29,7 @@ function Movies() {
   };
 
   const handlePageChange = (page) => {
-    console.log(page);
+    setCurrentPage(page);
   };
 
   //Count of movie items
@@ -82,6 +82,7 @@ function Movies() {
       <Pagination
         itemsCount={moviesCount}
         pageSize={pageSize}
+        currentPage={currentPage}
         onPageChange={handlePageChange}
       />
     </>
