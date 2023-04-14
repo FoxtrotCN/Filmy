@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Like from "./common/like";
 import Pagination from "./common/pagination";
 import ListGroupGenres from "./common/listGroupGenres";
 import { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
+import { getGenres } from "../services/fakeGenreService";
 import { paginate } from "../utils/paginate";
 
 function Movies() {
-  const [allMovies, setAllMovies] = useState(getMovies());
+  const [allMovies, setAllMovies] = useState(getMovies);
+  const [allGenres, setAllGenres] = useState(getGenres);
   const [pageSize, setPageSize] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -34,6 +36,12 @@ function Movies() {
     setCurrentPage(page);
   };
 
+  const handleGenreSelect = (genreId) => {
+    console.log(genreId);
+    const filteredGenres = allGenres.filter((g) => g.id !== genreId);
+    setAllGenres(filteredGenres);
+  };
+
   //Count of movie items
   let moviesCount = allMovies.length;
   if (moviesCount === 0)
@@ -48,7 +56,10 @@ function Movies() {
     <>
       <div className="row">
         <div className="col-2">
-          <ListGroupGenres />
+          <ListGroupGenres
+            genres={allGenres}
+            onGenreSelected={handleGenreSelect}
+          />
         </div>
 
         <div className="col">

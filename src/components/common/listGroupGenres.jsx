@@ -1,10 +1,18 @@
 import React from "react";
 
-function ListGroupGenres() {
+function ListGroupGenres({ genres, onGenreSelected }) {
   return (
     <>
       <ul className="list-group">
-        <li className="list-group-item"></li>
+        {genres.map((genre) => (
+          <li
+            key={genre._id}
+            className="list-group-item"
+            onClick={() => onGenreSelected(genre)}
+          >
+            {genre.name}
+          </li>
+        ))}
       </ul>
     </>
   );
