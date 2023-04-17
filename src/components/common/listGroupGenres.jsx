@@ -5,6 +5,7 @@ function ListGroupGenres({
   onGenreSelected,
   textProperty,
   valueProperty,
+  selectedGenre,
 }) {
   return (
     <>
@@ -12,7 +13,11 @@ function ListGroupGenres({
         {genres.map((genre) => (
           <li
             key={genre[valueProperty]}
-            className="list-group-item"
+            className={
+              genre === selectedGenre
+                ? "list-group-item active"
+                : "list-group-item"
+            }
             onClick={() => onGenreSelected(genre)}
           >
             {genre[textProperty]}

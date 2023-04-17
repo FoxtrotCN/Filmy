@@ -8,10 +8,19 @@ import { getGenres } from "../services/fakeGenreService";
 import { paginate } from "../utils/paginate";
 
 function Movies() {
-  const [allMovies, setAllMovies] = useState(getMovies);
-  const [allGenres, setAllGenres] = useState(getGenres);
+  const [allMovies, setAllMovies] = useState([]);
+  const [allGenres, setAllGenres] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(null);
   const [pageSize, setPageSize] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setAllMovies(getMovies());
+  }, []);
+
+  useEffect(() => {
+    setAllGenres(getGenres());
+  }, []);
 
   const handleDelete = (movie) => {
     const filteredMovies = allMovies.filter((m) => m._id !== movie._id);
@@ -36,9 +45,9 @@ function Movies() {
     setCurrentPage(page);
   };
 
-  const handleGenreSelect = (genreId) => {
-    console.log(genreId);
-    const filteredGenres = allGenres.filter((g) => g.id !== genreId);
+  const handleGenreSelect = (genre) => {
+    setSelectedGenre(genre);
+    const filteredGenres = allGenres.filter((g) => g.id !== genre._id);
     setAllGenres(filteredGenres);
   };
 
@@ -58,6 +67,7 @@ function Movies() {
         <div className="col-3">
           <ListGroupGenres
             genres={allGenres}
+            selectedGenre={selectedGenre}
             onGenreSelected={handleGenreSelect}
           />
         </div>
