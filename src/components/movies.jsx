@@ -10,6 +10,7 @@ import { paginate } from "../utils/paginate";
 function Movies() {
   const [allMovies, setAllMovies] = useState([]);
   const [allGenres, setAllGenres] = useState([]);
+  // const [genre, setGenre] = useState({});
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [pageSize, setPageSize] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,6 +21,11 @@ function Movies() {
 
   useEffect(() => {
     setAllGenres(getGenres());
+  }, []);
+
+  useEffect(() => {
+    const genres = [{ name: "All Genres" }, ...getGenres()];
+    setAllGenres(genres);
   }, []);
 
   const handleDelete = (movie) => {
@@ -47,9 +53,15 @@ function Movies() {
 
   const handleGenreSelect = (genre) => {
     setSelectedGenre(genre);
-    const filteredGenres = allGenres.filter((g) => g.id !== genre._id);
-    setAllGenres(filteredGenres);
+    setCurrentPage(1);
   };
+
+  // Paginate movies
+  const filteredMovies =
+    selectedGenre && selectedGenre._id
+      ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
+      : allMovies;
+  const movies = paginate(filteredMovies, currentPage, pageSize);
 
   //Count of movie items
   let moviesCount = allMovies.length;
@@ -57,9 +69,6 @@ function Movies() {
     return (
       <p className={getBadgeMessage()}>There are no movies in the database.</p>
     );
-
-  // Paginate movies
-  const movies = paginate(allMovies, currentPage, pageSize);
 
   return (
     <>
@@ -74,7 +83,7 @@ function Movies() {
 
         <div className="col">
           <p className={getBadgeMessage()}>
-            Showing {allMovies.length} movies in the database.
+            Showing {filteredMovies.length} movies in the database.
           </p>
           <table className="table">
             <thead>
@@ -115,7 +124,7 @@ function Movies() {
           </table>
 
           <Pagination
-            itemsCount={moviesCount}
+            itemsCount={filteredMovies.length}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={handlePageChange}
