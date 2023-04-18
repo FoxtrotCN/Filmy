@@ -35,7 +35,6 @@ function MoviesTable({ sortColumn, movies, onLike, onDelete, onSort }) {
           sortColumn={sortColumn}
           onSort={onSort}
         />
-
         <TableBody columns={columns} data={movies} />
       </table>
     </>
