@@ -1,16 +1,26 @@
 import React from "react";
 import Like from "./common/like";
 
-function MoviesTable({ movies, onLike, onDelete, onSort }) {
+function MoviesTable({ sortColumn, movies, onLike, onDelete, onSort }) {
+  const raiseSort = (path) => {
+    const sortedColumn = { ...sortColumn };
+    if (sortedColumn.path === path)
+      sortedColumn.order = sortedColumn.order === "asc" ? "desc" : "asc";
+    else {
+      sortedColumn.path = path;
+      sortedColumn.order = "asc";
+    }
+    onSort(sortedColumn);
+  };
   return (
     <>
       <table className="table">
         <thead>
           <tr>
-            <th onClick={() => onSort("title")}>Title</th>
-            <th onClick={() => onSort("genre.name")}>Genre</th>
-            <th onClick={() => onSort("numberInStock")}>Stock</th>
-            <th onClick={() => onSort("rate")}>Rate</th>
+            <th onClick={() => raiseSort("title")}>Title</th>
+            <th onClick={() => raiseSort("genre.name")}>Genre</th>
+            <th onClick={() => raiseSort("numberInStock")}>Stock</th>
+            <th onClick={() => raiseSort("rate")}>Rate</th>
             <th />
             <th />
           </tr>

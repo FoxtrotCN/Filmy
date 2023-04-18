@@ -60,28 +60,24 @@ function Movies() {
     setCurrentPage(1);
   };
 
-  const handleSort = (path) => {
-    const sortedColumn = { ...sortColumn };
-    if (sortedColumn.path === path)
-      sortedColumn.order = sortedColumn.order === "asc" ? "desc" : "asc";
-    else {
-      sortedColumn.path = path;
-      sortedColumn.order = "asc";
-    }
+  const handleSort = (sortedColumn) => {
     setSortColumn(sortedColumn);
   };
 
-  // Paginate movies
+  // Filtering Movies
   const filteredMovies =
     selectedGenre && selectedGenre._id
       ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
       : allMovies;
 
+  // Sorting movies
   const sorted = _.orderBy(
     filteredMovies,
     [sortColumn.path],
     [sortColumn.order]
   );
+
+  // Paginating movies
   const movies = paginate(sorted, currentPage, pageSize);
 
   //Count of movie items
@@ -108,6 +104,7 @@ function Movies() {
           </p>
 
           <MoviesTable
+            sortColumn={sortColumn}
             movies={movies}
             onLike={handleLike}
             onDelete={handleDelete}
