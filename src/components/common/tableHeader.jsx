@@ -1,4 +1,7 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSortAsc } from "@fortawesome/free-solid-svg-icons";
+import { faSortDesc } from "@fortawesome/free-solid-svg-icons";
 
 function TableHeader({ columns, sortColumn, onSort }) {
   const raiseSort = (path) => {
@@ -11,16 +14,23 @@ function TableHeader({ columns, sortColumn, onSort }) {
     }
     onSort(sortedColumn);
   };
+
+  const raiseSortIcon = (column) => {
+    if (column.path !== sortColumn.path) return null;
+    if (sortColumn.order === "asc") return <FontAwesomeIcon icon={faSortAsc} />;
+    return <FontAwesomeIcon icon={faSortDesc} />;
+  };
   return (
     <>
       <thead>
         <tr>
           {columns.map((column) => (
             <th
+              className="clickable"
               key={column.path || column.key}
               onClick={() => raiseSort(column.path)}
             >
-              {column.label}
+              {column.label} {raiseSortIcon(column)}
             </th>
           ))}
         </tr>
