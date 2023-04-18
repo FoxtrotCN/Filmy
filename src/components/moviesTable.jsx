@@ -3,10 +3,22 @@ import Like from "./common/like";
 import TableHeader from "./common/tableHeader";
 
 function MoviesTable({ sortColumn, movies, onLike, onDelete, onSort }) {
+  const columns = [
+    { path: "title", label: "Title" },
+    { path: "genre.name", label: "Genre" },
+    { path: "numberInStock", label: "Stock" },
+    { path: "dailyRentalRate", label: "Rate" },
+    { key: "like" },
+    { key: "delete" },
+  ];
   return (
     <>
       <table className="table">
-        <TableHeader sortColumn={sortColumn} onSort={onSort} />
+        <TableHeader
+          columns={columns}
+          sortColumn={sortColumn}
+          onSort={onSort}
+        />
 
         <tbody>
           {movies.map((movie) => (

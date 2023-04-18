@@ -1,14 +1,6 @@
 import React from "react";
 
-function TableHeader({ sortColumn, onSort }) {
-  const columns = [
-    { path: "title", label: "Title" },
-    { path: "genre.name", label: "Genre" },
-    { path: "numberInStock", label: "Stock" },
-    { path: "dailyRentalRate", label: "Rate" },
-    { key: "like" },
-    { key: "delete" },
-  ];
+function TableHeader({ columns, sortColumn, onSort }) {
   const raiseSort = (path) => {
     const sortedColumn = { ...sortColumn };
     if (sortedColumn.path === path)
