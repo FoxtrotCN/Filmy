@@ -64,21 +64,24 @@ function Movies() {
     setSortColumn(sortedColumn);
   };
 
-  // Filtering Movies
-  const filteredMovies =
-    selectedGenre && selectedGenre._id
-      ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
-      : allMovies;
+  const getPageData = () => {
+    const filteredMovies =
+      selectedGenre && selectedGenre._id
+        ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
+        : allMovies;
 
-  // Sorting movies
-  const sorted = _.orderBy(
-    filteredMovies,
-    [sortColumn.path],
-    [sortColumn.order]
-  );
+    const sorted = _.orderBy(
+      filteredMovies,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
 
-  // Paginating movies
-  const movies = paginate(sorted, currentPage, pageSize);
+    const movies = paginate(sorted, currentPage, pageSize);
+
+    return { totalCount: filteredMovies.length, data: movies };
+  };
+
+  const { totalCount, data: movies } = getPageData();
 
   //Count of movie items
   let moviesCount = allMovies.length;
@@ -100,7 +103,7 @@ function Movies() {
 
         <div className="col">
           <p className={getBadgeMessage()}>
-            Showing {filteredMovies.length} movies in the database.
+            Showing {totalCount} movies in the database.
           </p>
 
           <MoviesTable
@@ -111,7 +114,7 @@ function Movies() {
             onSort={handleSort}
           />
           <Pagination
-            itemsCount={filteredMovies.length}
+            itemsCount={totalCount}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={handlePageChange}
